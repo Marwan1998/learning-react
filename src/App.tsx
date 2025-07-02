@@ -3,6 +3,7 @@ import Card from './Card'
 
 function App() {
 
+
   return (
     <div className='card-container'>
       <Card title="Movie 1"/>
