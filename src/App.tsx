@@ -1,16 +1,24 @@
-import './App.css'
-import Card from './Card'
+import { useState } from 'react'
+import Search from './components/search'
 
-function App() {
+const App = () => {
+
+  const [searchTerm, setSearchTerm] = useState('');
 
 
   return (
-    <div className='card-container'>
-      <Card title="Movie 1"/>
-      <Card title="Movie 2"/>
-      <Card title="Movie 3"/>
-      <Card title="Movie 4"/>
-    </div>
+    <main>
+      <div className='pattern'/>
+
+      <div className='wrapper'>
+        <header>
+          <img src="../public/hero.png" alt="hero" />
+          <h1>Find <span className='text-gradient'>Movies</span> You'll Enjoy and spend time on!</h1>
+        </header>
+
+        <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+      </div>
+    </main>
   )
 }
 
