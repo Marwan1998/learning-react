@@ -40,11 +40,15 @@ const App = () => {
   const [isLoading, setisLoading] = useState<boolean>(false);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>('');
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [nextPage, setNextPage] = useState<number>(2);
+  const [totalPages, setTotalPages] = useState<number>(1);
+
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 1000, [searchTerm]);
 
   const page = 1;
 
-  const fetchMovies = async (query = '') => {
+  const fetchMovies = async (query = '', page = 1) => {
     try {
       setisLoading(true);
       setErrorMessage('');
@@ -70,9 +74,9 @@ const App = () => {
 
       setMoviesList(data.results || []);
 
-      console.log(data.page, data.total_pages);
-      
-      setPaginationButtons(data.page, data.total_pages);
+      setCurrentPage(data.page);
+      setNextPage(data.page + 1 <= data.total_pages ? data.page+1 : data.page);
+      setTotalPages(data.total_pages);
 
       if(query && data.results.length > 0) {
         await updateSearchCount(query, data.results[0]);
@@ -93,7 +97,6 @@ const App = () => {
       settrendingMoviesList(trendingMovies);
     } catch (error) {
       console.log(error);
-      // setErrorMessage('Error fetching trending movies');
     }
   };
 
@@ -107,25 +110,30 @@ const App = () => {
   }, []);
 
 
-  const setPaginationButtons = (page: number, totalPages: number) => {
-    const nextPage = page + 1 < totalPages ? page + 1 : totalPages;
-    console.log(nextPage);
-    
+  const renderPaginationButtons = () => {
+    const prevPage = page - 1 > totalPages ? page - 1 : page;
+
     return (
       <>
-        <PaginationBox isDisabled={false} onClick={() => handlePaginationClick()}>{"<"}</PaginationBox>
-        <PaginationBox isDisabled={false} onClick={() => handlePaginationClick()}>{page}</PaginationBox>
-        <PaginationBox isDisabled={false} onClick={() => handlePaginationClick()}>{nextPage}</PaginationBox>
-        <PaginationBox isDisabled={true} onClick={() => handlePaginationClick()}>...</PaginationBox>
-        <PaginationBox isDisabled={true} onClick={() => handlePaginationClick()}>{totalPages}</PaginationBox>
-        <PaginationBox isDisabled={false} onClick={() => handlePaginationClick()}>{">"}</PaginationBox>
+        <PaginationBox isDisabled={false} onClick={() => handlePaginationClick(prevPage)}>{"<"}</PaginationBox>
+        <PaginationBox isDisabled={false} onClick={()=>0}>{currentPage}</PaginationBox>
+        <PaginationBox isDisabled={false} onClick={() => handlePaginationClick(nextPage)}>{nextPage}</PaginationBox>
+        <PaginationBox isDisabled={true} onClick={()=>0}>...</PaginationBox>
+        <PaginationBox isDisabled={true} onClick={()=>0}>{totalPages}</PaginationBox>
+        <PaginationBox isDisabled={false} onClick={() => handlePaginationClick(nextPage)}>{">"}</PaginationBox>
       </>
     );
   };
 
-  const handlePaginationClick = () => {
-    console.log('hiiii');
-  }
+  const handlePaginationClick = async (targetPage: number) => {
+    console.log(targetPage);
+    if (targetPage < 1 || targetPage > totalPages || targetPage === currentPage)
+      return;
+    // setCurrentPage(targetPage);
+
+    await fetchMovies(debouncedSearchTerm, targetPage);
+  };
+  
 
   return (
     <main>
@@ -175,7 +183,7 @@ const App = () => {
         </section>
 
         <section className='pagination pt-10 flex'>
-          {setPaginationButtons()}
+          {renderPaginationButtons()}
         </section>
 
 
