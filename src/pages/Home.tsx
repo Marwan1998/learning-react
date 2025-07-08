@@ -42,7 +42,7 @@ const Home = () => {
 
       <div className="wrapper">
         <header>
-          <img src="../public/hero.png" alt="hero" />
+          <img src="/hero.png" alt="hero" />
           <h1>
             Find <span className="text-gradient">Movies</span> You'll Enjoy and
             spend time on!
