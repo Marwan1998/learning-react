@@ -7,7 +7,7 @@ import Pagination from "../components/Pagination";
 import { useMovies } from "../hooks/useMovies";
 import { useTrendingMovies } from "../hooks/useTrendingMovies";
 import type { Movie } from "../types/index";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
 
@@ -80,7 +80,9 @@ const Home = () => {
           {!isLoading && !errorMessage && (
             <ul>
               {moviesList.map((movie: Movie) => (
-                <MovieCard key={movie.id} movie={movie} />
+                <Link to={'movie/' + movie.id.toString()} key={movie.id}>
+                  <MovieCard key={movie.id} movie={movie} />
+                </Link>
               ))}
             </ul>
           )}
