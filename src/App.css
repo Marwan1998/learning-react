@@ -165,3 +165,7 @@
 .pagination{
   margin-inline: auto;
 }
+
+a.active li{
+  color: aquamarine;
+}
