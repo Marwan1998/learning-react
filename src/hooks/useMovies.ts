@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { updateSearchCount } from '../appwrite';
+import type { Movie } from '../types/index';
 
 const baseURL = 'https://api.themoviedb.org/3';
 const APIKey = import.meta.env.VITE_TMDB_API_KEY as string;
@@ -12,14 +13,6 @@ const APIOptions = {
   }
 };
 
-interface Movie {
-  id: number;
-  title: string;
-  vote_average: number,
-  release_date: string,
-  original_language: string,
-  poster_path: string;
-}
 
 export const useMovies = () => {
   const [moviesList, setMoviesList] = useState<Movie[]>([]);

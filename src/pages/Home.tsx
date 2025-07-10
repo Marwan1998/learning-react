@@ -37,66 +37,62 @@ const Home = () => {
   };
 
   return (
-    <main>
-      <div className="pattern" />
+    <div className="wrapper">
+      <header>
+        <img src="/hero.png" alt="hero" />
+        <h1>
+          Find <span className="text-gradient">Movies</span> You'll Enjoy and
+          spend time on!
+        </h1>
 
-      <div className="wrapper">
-        <header>
-          <img src="/hero.png" alt="hero" />
-          <h1>
-            Find <span className="text-gradient">Movies</span> You'll Enjoy and
-            spend time on!
-          </h1>
+        <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      </header>
 
-          <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        </header>
+      {!trendingLoading && trendingMoviesList.length > 0 && (
+        <section className="trending">
+          <h2>Trending Movies</h2>
+          <ul>
+            {trendingMoviesList.map((movie, index) => (
+              <li key={movie.$id} onClick={() => nagivate('/about')}>
+                <p className="mr-3">{index + 1}</p>
+                <img
+                  src={movie.poster_url || "/no-movie.png"}
+                  alt={movie.title}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
-        {!trendingLoading && trendingMoviesList.length > 0 && (
-          <section className="trending">
-            <h2>Trending Movies</h2>
-            <ul>
-              {trendingMoviesList.map((movie, index) => (
-                <li key={movie.$id} onClick={() => nagivate('/about')}>
-                  <p className="mr-3">{index + 1}</p>
-                  <img
-                    src={movie.poster_url || "/no-movie.png"}
-                    alt={movie.title}
-                  />
-                </li>
-              ))}
-            </ul>
-          </section>
+      <section className="all-movies">
+        <h2>All Movies</h2>
+
+        {isLoading && <Spinner />}
+
+        {!isLoading && errorMessage && (
+          <p className="text-red-500">{errorMessage}</p>
         )}
 
-        <section className="all-movies">
-          <h2>All Movies</h2>
+        {!isLoading && !errorMessage && (
+          <ul>
+            {moviesList.map((movie: Movie) => (
+              <Link to={'movie/' + movie.id.toString()} key={movie.id}>
+                <MovieCard key={movie.id} movie={movie} />
+              </Link>
+            ))}
+          </ul>
+        )}
+      </section>
 
-          {isLoading && <Spinner />}
-
-          {!isLoading && errorMessage && (
-            <p className="text-red-500">{errorMessage}</p>
-          )}
-
-          {!isLoading && !errorMessage && (
-            <ul>
-              {moviesList.map((movie: Movie) => (
-                <Link to={'movie/' + movie.id.toString()} key={movie.id}>
-                  <MovieCard key={movie.id} movie={movie} />
-                </Link>
-              ))}
-            </ul>
-          )}
-        </section>
-
-        <section className="pagination pt-10 flex">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </section>
-      </div>
-    </main>
+      <section className="pagination pt-10 flex">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </section>
+    </div>
   );
 };
 

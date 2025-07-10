@@ -13,3 +13,7 @@ const ShowMovie = () => {
 }
 
 export default ShowMovie
+
+export const MovieLoader = async () => {
+  
+}
