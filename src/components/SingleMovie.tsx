@@ -1,4 +1,5 @@
-export default function TabsTest() {
+
+const SingleMovie = () => {
     return (
         <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
@@ -114,3 +115,5 @@ export default function TabsTest() {
         </div>
     )
 }
+
+export default SingleMovie
