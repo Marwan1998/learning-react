@@ -1,12 +1,17 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useRouteError, isRouteErrorResponse } from 'react-router-dom'
 
 const RouteLayout = () => {
+
+  const error = useRouteError();
+  const hasError = isRouteErrorResponse(error) || error instanceof Error;
+
+  console.log(hasError);
+  
+
   return (
     <main>
-      <div className="pattern" />
-
-      <Outlet />
-
+      {!hasError && <div className="pattern" />}
+        <Outlet />
     </main>
   )
 }

@@ -28,8 +28,8 @@ export const useMovies = () => {
       setErrorMessage('');
 
       const url = query
-        ? `${baseURL}/search/movie?query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=${page}`
-        : `${baseURL}/discover/movie?include_adult=false&language=en-US&page=${page}`;
+        ? `${baseURL}/search/movie?query=${encodeURIComponent(query)}&include_adult=true&language=en-US&page=${page}`
+        : `${baseURL}/discover/movie?include_adult=true&language=en-US&page=${page}`;
 
       const response = await fetch(url, APIOptions);
 
